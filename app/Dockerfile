@@ -4,7 +4,7 @@
 # Multi-stage build for optimized production image
 # Based on official PHP-FPM with Nginx
 
-FROM php:8.3-fpm-alpine AS base
+FROM php:8.4-fpm-alpine AS base
 
 # Labels for container metadata (OCI standard)
 LABEL org.opencontainers.image.title="PHP Todo App" \
@@ -126,7 +126,7 @@ RUN apk add --no-cache \
 
 # Install Xdebug for debugging
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS linux-headers \
-    && pecl install xdebug-3.4.2 \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk del .build-deps \
     && rm -rf /tmp/*

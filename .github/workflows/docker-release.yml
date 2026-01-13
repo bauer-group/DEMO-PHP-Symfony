@@ -44,6 +44,7 @@ jobs:
     name: Validate Compose Files
     uses: bauer-group/automation-templates/.github/workflows/modules-validate-compose.yml@main
     with:
+      runs-on: '["self-hosted", "linux"]'
       compose-files: |
         [
           "docker-compose.coolify.yml",
@@ -77,6 +78,7 @@ jobs:
     name: Validate Shell Scripts
     uses: bauer-group/automation-templates/.github/workflows/modules-validate-shellscript.yml@main
     with:
+      runs-on: '["self-hosted", "linux"]'
       scan-directory: '.'
       severity: 'warning'
     secrets: inherit
@@ -90,6 +92,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: bauer-group/automation-templates/.github/workflows/modules-semantic-release.yml@main
     with:
+      runs-on: '["self-hosted", "linux"]'
       target-branch: 'main'
       dry-run: false
       force-release: ${{ inputs.force-release || false }}
@@ -104,6 +107,7 @@ jobs:
     if: needs.release.outputs.release-created == 'true'
     uses: bauer-group/automation-templates/.github/workflows/docker-build.yml@main
     with:
+      runs-on: '["self-hosted", "linux"]'
       deploy-environment: 'production'
       publish-to: 'ghcr'
       ghcr-image-name: ${{ github.repository }}/todo-demo
@@ -129,6 +133,7 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: bauer-group/automation-templates/.github/workflows/docker-build.yml@main
     with:
+      runs-on: '["self-hosted", "linux"]'
       publish-to: 'ghcr'
       ghcr-image-name: ${{ github.repository }}/todo-demo
       auto-tags: true
