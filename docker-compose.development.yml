@@ -29,7 +29,8 @@ services:
     # No restart policy for development
     ports:
       - "${APP_PORT:-8080}:80"
-      - "${XDEBUG_PORT:-9003}:9003"
+      # Note: Xdebug connects OUTBOUND to host.docker.internal:9003
+      # No port mapping needed - VSCode listens on host, container connects to it
     environment:
       - APP_ENV=dev
       - APP_SECRET=dev-secret-not-for-production

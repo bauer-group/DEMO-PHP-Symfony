@@ -20,6 +20,10 @@ chown -R app:app var vendor
 echo "==> Syncing Composer dependencies..."
 su-exec app composer install --no-interaction --prefer-dist
 
+# Install importmap vendor assets (Turbo, Stimulus)
+echo "==> Installing importmap assets..."
+su-exec app php bin/console importmap:install
+
 # Clear old cache to ensure fresh config is used
 echo "==> Clearing cache..."
 rm -rf var/cache/*
