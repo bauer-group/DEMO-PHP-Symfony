@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.0...v0.3.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* update Dockerfile to expose only HTTP port and enhance entrypoint script with timeout handling for importmap installation ([20d88c0](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/20d88c020f22942a54503f26688dcfb96b93db43))
+
 # [0.3.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.2.0...v0.3.0) (2026-01-13)
 
 
