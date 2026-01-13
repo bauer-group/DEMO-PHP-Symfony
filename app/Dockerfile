@@ -117,11 +117,16 @@ RUN apk add --no-cache \
     vim \
     && rm -rf /var/cache/apk/*
 
-# Install Xdebug for debugging using PIE (recommended for PHP 8.5)
-RUN apk add --no-cache --virtual .xdebug-deps $PHPIZE_DEPS linux-headers \
-    && curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /usr/local/bin/pie \
-    && chmod +x /usr/local/bin/pie \
-    && pie install xdebug/xdebug \
+# Install Xdebug 3.5.0 from source (PHP 8.5 support)
+RUN apk add --no-cache --virtual .xdebug-deps $PHPIZE_DEPS linux-headers git \
+    && git clone --depth 1 --branch 3.5.0 https://github.com/xdebug/xdebug.git /tmp/xdebug \
+    && cd /tmp/xdebug \
+    && phpize \
+    && ./configure --enable-xdebug \
+    && make \
+    && make install \
+    && docker-php-ext-enable xdebug \
+    && cd / \
     && apk del .xdebug-deps \
     && rm -rf /tmp/*
 
