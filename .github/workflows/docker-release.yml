@@ -122,6 +122,7 @@ jobs:
       security-scan: false
       security-fail-on: 'CRITICAL'
       generate-sbom: true
+      cache-enabled: false
     secrets: inherit
 
   # ---------------------------------------------------------------------------
@@ -143,4 +144,5 @@ jobs:
       push: false
       security-scan: false
       security-fail-on: 'CRITICAL'
+      cache-enabled: false
     secrets: inherit
