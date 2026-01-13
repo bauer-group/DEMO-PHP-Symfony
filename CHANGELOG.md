@@ -1,3 +1,10 @@
+## [0.3.4](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.3...v0.3.4) (2026-01-13)
+
+
+### Bug Fixes
+
+* streamline asset installation error handling in entrypoint script ([69b2fbb](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/69b2fbb3ff347eee3eaec7266ee9aba832db49c9))
+
 ## [0.3.3](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.2...v0.3.3) (2026-01-13)
 
 
