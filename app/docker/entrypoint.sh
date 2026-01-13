@@ -7,6 +7,14 @@ set -e
 
 echo "==> Starting PHP Todo Application..."
 
+cd /app
+
+# Ensure .env exists (required by Symfony bootstrap)
+if [ ! -f .env ]; then
+    echo "==> Creating .env from .env.dev template..."
+    cp .env.dev .env
+fi
+
 # Wait for database to be ready
 echo "==> Waiting for database connection..."
 max_attempts=30

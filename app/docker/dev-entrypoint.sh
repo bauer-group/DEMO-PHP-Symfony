@@ -11,10 +11,16 @@ echo "==> Starting PHP Todo Application (Development Mode)..."
 
 cd /app
 
+# Ensure .env exists (required by Symfony)
+if [ ! -f .env ]; then
+    echo "==> Creating .env from .env.dev template..."
+    cp .env.dev .env
+fi
+
 # Fix permissions for mounted volumes
 echo "==> Fixing permissions..."
 mkdir -p var/cache var/log vendor
-chown -R app:app var vendor
+chown -R app:app var vendor .env
 
 # Sync dependencies (without auto-scripts to control importmap:install separately)
 echo "==> Syncing Composer dependencies..."
