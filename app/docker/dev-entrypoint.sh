@@ -16,13 +16,18 @@ echo "==> Fixing permissions..."
 mkdir -p var/cache var/log vendor
 chown -R app:app var vendor
 
-# Sync dependencies
+# Sync dependencies (without auto-scripts to control importmap:install separately)
 echo "==> Syncing Composer dependencies..."
-su-exec app composer install --no-interaction --prefer-dist
+su-exec app composer install --no-interaction --prefer-dist --no-scripts
+su-exec app composer dump-autoload
 
-# Install importmap vendor assets (Turbo, Stimulus)
+# Run Symfony auto-scripts manually (except importmap:install)
+echo "==> Installing assets..."
+su-exec app php bin/console assets:install public
+
+# Install importmap vendor assets (Turbo, Stimulus) with timeout
 echo "==> Installing importmap assets..."
-if ! timeout 60 su-exec app php bin/console importmap:install 2>/dev/null; then
+if ! timeout 60 su-exec app php bin/console importmap:install; then
     echo "==> Warning: importmap:install timed out or failed, continuing anyway..."
 fi
 
