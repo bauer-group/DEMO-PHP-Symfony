@@ -1,0 +1,141 @@
+# =============================================================================
+# Docker Release Pipeline
+# =============================================================================
+# Validates, builds, and releases Docker images for the PHP Todo App.
+#
+# Uses reusable workflows from bauer-group/automation-templates
+# =============================================================================
+
+name: Docker Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
+      - 'docs/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+  workflow_dispatch:
+    inputs:
+      force-release:
+        description: 'Force a new release even without conventional commits'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: write
+  security-events: write
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Validate Docker Compose Files
+  # ---------------------------------------------------------------------------
+  validate-compose:
+    name: Validate Compose Files
+    uses: bauer-group/automation-templates/.github/workflows/modules-validate-compose.yml@main
+    with:
+      compose-files: |
+        [
+          "docker-compose.coolify.yml",
+          "docker-compose.traefik.yml",
+          "docker-compose.development.yml"
+        ]
+      env-template: |
+        {
+          "STACK_NAME": "todo-app",
+          "SERVICE_HOSTNAME": "todo.example.com",
+          "TIME_ZONE": "Etc/UTC",
+          "MYSQL_ROOT_PASSWORD": "test-root-password",
+          "MYSQL_DATABASE": "todo_db",
+          "MYSQL_USER": "todo_user",
+          "MYSQL_PASSWORD": "test-password",
+          "APP_ENV": "prod",
+          "APP_SECRET": "test-secret-key",
+          "APP_DEBUG": "0",
+          "APP_PORT": "8080",
+          "DB_PORT": "3306",
+          "XDEBUG_PORT": "9003",
+          "PMA_PORT": "8081",
+          "PROXY_NETWORK": "EDGEPROXY"
+        }
+    secrets: inherit
+
+  # ---------------------------------------------------------------------------
+  # Validate Shell Scripts
+  # ---------------------------------------------------------------------------
+  validate-scripts:
+    name: Validate Shell Scripts
+    uses: bauer-group/automation-templates/.github/workflows/modules-validate-shellscript.yml@main
+    with:
+      scan-directory: '.'
+      severity: 'warning'
+    secrets: inherit
+
+  # ---------------------------------------------------------------------------
+  # Semantic Release
+  # ---------------------------------------------------------------------------
+  release:
+    name: Create Release
+    needs: [validate-compose, validate-scripts]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: bauer-group/automation-templates/.github/workflows/modules-semantic-release.yml@main
+    with:
+      target-branch: 'main'
+      dry-run: false
+      force-release: ${{ inputs.force-release || false }}
+    secrets: inherit
+
+  # ---------------------------------------------------------------------------
+  # Build and Push Docker Image (Release)
+  # ---------------------------------------------------------------------------
+  docker-build-release:
+    name: Build Docker Image (Release)
+    needs: [release]
+    if: needs.release.outputs.release-created == 'true'
+    uses: bauer-group/automation-templates/.github/workflows/docker-build.yml@main
+    with:
+      deploy-environment: 'production'
+      publish-to: 'ghcr'
+      ghcr-image-name: ${{ github.repository }}
+      release-version: ${{ needs.release.outputs.version }}
+      update-dockerfile-version: true
+      auto-tags: true
+      latest-tag: true
+      dockerfile-path: './app/Dockerfile'
+      docker-context: './app'
+      platforms: 'linux/amd64'
+      push: true
+      security-scan: false
+      security-fail-on: 'CRITICAL'
+      generate-sbom: true
+    secrets: inherit
+
+  # ---------------------------------------------------------------------------
+  # Build Docker Image (PR Validation)
+  # ---------------------------------------------------------------------------
+  docker-build-pr:
+    name: Build Docker Image (PR)
+    needs: [validate-compose, validate-scripts]
+    if: github.event_name == 'pull_request'
+    uses: bauer-group/automation-templates/.github/workflows/docker-build.yml@main
+    with:
+      publish-to: 'ghcr'
+      ghcr-image-name: ${{ github.repository }}
+      auto-tags: true
+      dockerfile-path: './app/Dockerfile'
+      docker-context: './app'
+      platforms: 'linux/amd64'
+      push: false
+      security-scan: false
+      security-fail-on: 'CRITICAL'
+    secrets: inherit

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Todo - PHP Todo App{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Todo
+                    </h5>
+                    {% if todo.completed %}
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle me-1"></i>Completed
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.description) }}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.priority) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.dueDate) }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('todo_index') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Cancel
+                            </a>
+                            <div class="d-flex gap-2">
+                                <form action="{{ path('todo_toggle', {id: todo.id}) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ todo.id) }}">
+                                    <button type="submit" class="btn btn-outline-{% if todo.completed %}warning{% else %}success{% endif %}">
+                                        <i class="bi bi-{% if todo.completed %}arrow-counterclockwise{% else %}check-lg{% endif %} me-2"></i>
+                                        {% if todo.completed %}Reopen{% else %}Complete{% endif %}
+                                    </button>
+                                </form>
+                                <button type="submit" class="btn btn-gradient-primary">
+                                    <i class="bi bi-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+                <div class="card-footer text-muted small">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <i class="bi bi-calendar-plus me-1"></i>
+                            Created: {{ todo.createdAt|date('M d, Y H:i') }}
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            Updated: {{ todo.updatedAt|date('M d, Y H:i') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

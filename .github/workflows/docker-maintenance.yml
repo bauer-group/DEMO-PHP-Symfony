@@ -1,0 +1,30 @@
+# =============================================================================
+# Docker Maintenance - Dependabot Auto-Merge
+# =============================================================================
+# Automatically merges Dependabot PRs for Docker-related updates after
+# validation passes.
+#
+# Uses reusable workflows from bauer-group/automation-templates
+# =============================================================================
+
+name: Docker Maintenance
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/Dockerfile'
+      - 'src/docker/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot-auto-merge:
+    name: Auto-Merge Dependabot PRs
+    uses: bauer-group/automation-templates/.github/workflows/docker-maintenance-dependabot.yml@main
+    with:
+      merge-method: 'squash'
+      auto-approve: true
+    secrets: inherit

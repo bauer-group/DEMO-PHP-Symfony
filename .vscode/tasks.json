@@ -1,0 +1,115 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Docker: Start Development",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml up -d",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Stop Development",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml down",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Rebuild Development",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml up -d --build",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: View Logs",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml logs -f app",
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Composer: Install",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app composer install",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Composer: Update",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app composer update",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Symfony: Clear Cache",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app php bin/console cache:clear",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Doctrine: Run Migrations",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app php bin/console doctrine:migrations:migrate --no-interaction",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Doctrine: Generate Migration",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app php bin/console make:migration",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Doctrine: Schema Update (Dry Run)",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app php bin/console doctrine:schema:update --dump-sql",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Symfony: Debug Router",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app php bin/console debug:router",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "PHPUnit: Run Tests",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml exec app ./vendor/bin/phpunit",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Start Production",
+            "type": "shell",
+            "command": "docker compose up -d --build",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Stop Production",
+            "type": "shell",
+            "command": "docker compose down",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: Start with phpMyAdmin",
+            "type": "shell",
+            "command": "docker compose -f docker-compose.development.yml --profile tools up -d",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

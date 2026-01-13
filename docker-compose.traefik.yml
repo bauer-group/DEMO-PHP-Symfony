@@ -1,0 +1,127 @@
+# =============================================================================
+# Docker Compose - Traefik Reverse Proxy Setup
+# =============================================================================
+# Usage:
+#   docker compose -f docker-compose.traefik.yml up -d
+#
+# Prerequisites:
+#   - Traefik must be running in the ${PROXY_NETWORK} network
+#   - DNS records pointing to your server
+#
+# Features:
+#   - Automatic HTTPS with Let's Encrypt
+#   - HTTP to HTTPS redirect
+#   - Health checks
+#   - CORS headers
+# =============================================================================
+
+name: ${STACK_NAME:-todo-app}
+
+services:
+  # ---------------------------------------------------------------------------
+  # PHP Application Server
+  # ---------------------------------------------------------------------------
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      target: production
+    container_name: ${STACK_NAME:-todo-app}_app
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      - APP_ENV=${APP_ENV:-prod}
+      - APP_SECRET=${APP_SECRET:-change-me-in-production}
+      - APP_DEBUG=${APP_DEBUG:-0}
+      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4
+      - TIME_ZONE=${TIME_ZONE:-Etc/UTC}
+      - TRUSTED_PROXIES=REMOTE_ADDR
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 30s
+      retries: 3
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      - "traefik.docker.network=${PROXY_NETWORK:-EDGEPROXY}"
+
+      # HTTP Router - Redirect to HTTPS
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-http.rule=Host(`${SERVICE_HOSTNAME:-todo.example.com}`)"
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-http.entrypoints=http"
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-http.middlewares=https-redirect@file"
+
+      # HTTPS Router
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-https.rule=Host(`${SERVICE_HOSTNAME:-todo.example.com}`)"
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-https.entrypoints=https"
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-https.tls=true"
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-https.tls.certresolver=letsencrypt"
+
+      # Middlewares
+      - "traefik.http.routers.${STACK_NAME:-todo-app}-https.middlewares=${STACK_NAME:-todo-app}-cors"
+
+      # CORS Middleware
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.accesscontrolallowheaders=Content-Type,Authorization"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.accesscontrolalloworiginlist=https://${SERVICE_HOSTNAME:-todo.example.com}"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.accesscontrolmaxage=86400"
+
+      # Security Headers
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.frameDeny=true"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.${STACK_NAME:-todo-app}-cors.headers.referrerPolicy=strict-origin-when-cross-origin"
+
+      # Service
+      - "traefik.http.services.${STACK_NAME:-todo-app}.loadbalancer.server.port=80"
+      - "traefik.http.services.${STACK_NAME:-todo-app}.loadbalancer.healthcheck.path=/health"
+      - "traefik.http.services.${STACK_NAME:-todo-app}.loadbalancer.healthcheck.interval=30s"
+    networks:
+      - internal
+      - proxy
+
+  # ---------------------------------------------------------------------------
+  # MySQL Database
+  # ---------------------------------------------------------------------------
+  database:
+    image: mysql:8.0
+    container_name: ${STACK_NAME:-todo-app}_database
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_secret_password}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-todo_db}
+      - MYSQL_USER=${MYSQL_USER:-todo_user}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-todo_password}
+      - TZ=${TIME_ZONE:-Etc/UTC}
+    volumes:
+      - database_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_secret_password}"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      - internal
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  internal:
+    driver: bridge
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-EDGEPROXY}
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  database_data:
+    name: ${STACK_NAME:-todo-app}_database_data

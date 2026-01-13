@@ -1,0 +1,91 @@
+{
+    "name": "PHP Todo App",
+    "dockerComposeFile": "../docker-compose.development.yml",
+    "service": "app",
+    "workspaceFolder": "/app",
+
+    "shutdownAction": "stopCompose",
+
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "php.validate.enable": true,
+                "php.validate.run": "onType",
+                "php.suggest.basic": false,
+
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+
+                "files.associations": {
+                    "*.twig": "twig"
+                },
+
+                "intelephense.environment.phpVersion": "8.3.0",
+                "intelephense.environment.documentRoot": "/app/public",
+                "intelephense.files.maxSize": 5000000,
+                "intelephense.stubs": [
+                    "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core",
+                    "ctype", "curl", "date", "dba", "dom", "enchant", "exif",
+                    "fileinfo", "filter", "fpm", "ftp", "gd", "gettext", "gmp",
+                    "hash", "iconv", "imap", "intl", "json", "ldap", "libxml",
+                    "mbstring", "mcrypt", "mysqli", "mysqlnd", "oci8", "odbc",
+                    "openssl", "pcntl", "pcre", "PDO", "pdo_mysql", "pdo_pgsql",
+                    "pdo_sqlite", "pgsql", "Phar", "posix", "pspell", "readline",
+                    "Reflection", "regex", "session", "shmop", "SimpleXML", "snmp",
+                    "soap", "sockets", "sodium", "SPL", "sqlite3", "standard",
+                    "superglobals", "sysvmsg", "sysvsem", "sysvshm", "tidy",
+                    "tokenizer", "xml", "xmlreader", "xmlrpc", "xmlwriter", "xsl",
+                    "Zend OPcache", "zip", "zlib"
+                ],
+
+                "[php]": {
+                    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+                    "editor.tabSize": 4,
+                    "editor.insertSpaces": true
+                },
+
+                "[twig]": {
+                    "editor.tabSize": 4,
+                    "editor.insertSpaces": true
+                }
+            },
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "DEVSENSE.phptools-vscode",
+                "mblode.twig-language-2",
+                "mikestead.dotenv",
+                "EditorConfig.EditorConfig",
+                "ms-azuretools.vscode-docker",
+                "eamodio.gitlens",
+                "usernamehw.errorlens"
+            ]
+        }
+    },
+
+    "forwardPorts": [8080, 3306, 9003],
+
+    "portsAttributes": {
+        "8080": {
+            "label": "PHP Todo App",
+            "onAutoForward": "notify"
+        },
+        "3306": {
+            "label": "MySQL Database",
+            "onAutoForward": "silent"
+        },
+        "9003": {
+            "label": "Xdebug",
+            "onAutoForward": "silent"
+        }
+    },
+
+    "postCreateCommand": "composer install --no-interaction && php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
+
+    "remoteUser": "app"
+}

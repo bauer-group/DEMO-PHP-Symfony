@@ -1,0 +1,125 @@
+# =============================================================================
+# Docker Compose - Development Environment
+# =============================================================================
+# Usage:
+#   docker compose -f docker-compose.development.yml up -d
+#   docker compose -f docker-compose.development.yml logs -f app
+#   docker compose -f docker-compose.development.yml down
+#
+# Features:
+#   - Hot-reload with mounted source code
+#   - Xdebug enabled for debugging
+#   - Symfony profiler enabled
+#   - Higher rate limits
+#   - Faster healthchecks
+# =============================================================================
+
+name: ${STACK_NAME:-todo-app}
+
+services:
+  # ---------------------------------------------------------------------------
+  # PHP Application Server (Development)
+  # ---------------------------------------------------------------------------
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      target: development
+    container_name: ${STACK_NAME:-todo-app}_app
+    # No restart policy for development
+    ports:
+      - "${APP_PORT:-8080}:80"
+      - "${XDEBUG_PORT:-9003}:9003"
+    environment:
+      - APP_ENV=dev
+      - APP_SECRET=dev-secret-not-for-production
+      - APP_DEBUG=1
+      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4
+      - TIME_ZONE=${TIME_ZONE:-Etc/UTC}
+      - VAR_DUMPER_SERVER=host.docker.internal:9912
+      - XDEBUG_MODE=debug,develop
+      - XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003 idekey=VSCODE
+    volumes:
+      # Mount source code for hot-reload
+      - ./app:/app:cached
+      # Preserve vendor directory in container
+      - vendor_data:/app/vendor
+      # Preserve var directory for cache/logs
+      - var_data:/app/var
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost/health"]
+      interval: 10s
+      timeout: 3s
+      start_period: 60s
+      retries: 3
+    networks:
+      - internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # ---------------------------------------------------------------------------
+  # MySQL Database
+  # ---------------------------------------------------------------------------
+  database:
+    image: mysql:8.0
+    container_name: ${STACK_NAME:-todo-app}_database
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_secret_password}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-todo_db}
+      - MYSQL_USER=${MYSQL_USER:-todo_user}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-todo_password}
+      - TZ=${TIME_ZONE:-Etc/UTC}
+    volumes:
+      - database_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_secret_password}"]
+      interval: 5s
+      timeout: 3s
+      start_period: 30s
+      retries: 5
+    networks:
+      - internal
+
+  # ---------------------------------------------------------------------------
+  # phpMyAdmin (Optional Database Management)
+  # ---------------------------------------------------------------------------
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ${STACK_NAME:-todo-app}_phpmyadmin
+    ports:
+      - "${PMA_PORT:-8081}:80"
+    environment:
+      - PMA_HOST=database
+      - PMA_USER=${MYSQL_USER:-todo_user}
+      - PMA_PASSWORD=${MYSQL_PASSWORD:-todo_password}
+      - UPLOAD_LIMIT=50M
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - internal
+    profiles:
+      - tools
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  internal:
+    driver: bridge
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  database_data:
+    name: ${STACK_NAME:-todo-app}_database_data
+  vendor_data:
+    name: ${STACK_NAME:-todo-app}_vendor
+  var_data:
+    name: ${STACK_NAME:-todo-app}_var
