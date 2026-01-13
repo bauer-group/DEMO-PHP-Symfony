@@ -7,7 +7,6 @@ doctrine:
             collation: utf8mb4_unicode_ci
 
         profiling_collect_backtrace: '%kernel.debug%'
-        use_savepoints: true
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -25,9 +24,6 @@ doctrine:
 
 when@test:
     doctrine:
-        dbal:
-            # Use SQLite for tests (configured in .env.test)
-            use_savepoints: true
         orm:
             auto_generate_proxy_classes: true
 
