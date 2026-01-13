@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.source="https://github.com/bauer-group/DEMO-PHP-D
 LABEL org.opencontainers.image.url="https://github.com/bauer-group/DEMO-PHP-Dockerized"
 LABEL org.opencontainers.image.documentation="https://github.com/bauer-group/DEMO-PHP-Dockerized#readme"
 LABEL org.opencontainers.image.description="Containerized PHP Todo Application with Symfony and Doctrine"
-LABEL org.opencontainers.image.version="0.0.0"
+LABEL org.opencontainers.image.version="0.1.9"
 
 # Install system dependencies
 RUN apk add --no-cache \

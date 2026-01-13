@@ -1,3 +1,12 @@
+## [0.1.9](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.8...v0.1.9) (2026-01-13)
+
+
+### Bug Fixes
+
+* add docker configuration to Symfony extra settings in composer.json ([dccbfa4](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/dccbfa44027cd85d98e656dc02e4961fd3f0216d))
+* remove use_savepoints configuration from doctrine settings ([d073d20](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/d073d20507928479db8f3483084395d0eb48cb46))
+* update dependencies in composer files and improve entrypoint script for syncing ([9462235](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/94622351c8b020691a438be9db10a7aaeb940e7a))
+
 ## [0.1.8](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.7...v0.1.8) (2026-01-13)
 
 
