@@ -119,7 +119,7 @@ networks:
 # -----------------------------------------------------------------------------
 volumes:
   database_data:
-    name: ${STACK_NAME:-todo-app}_database_data
+    name: ${STACK_NAME:-todo-app}_database
   app_vendor:
     name: ${STACK_NAME:-todo-app}_vendor
   app_var:
