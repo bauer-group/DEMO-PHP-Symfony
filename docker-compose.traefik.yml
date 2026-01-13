@@ -34,7 +34,7 @@ services:
       - APP_ENV=${APP_ENV:-prod}
       - APP_SECRET=${APP_SECRET:-change-me-in-production}
       - APP_DEBUG=${APP_DEBUG:-0}
-      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4
+      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4&sslmode=disabled
       - TIME_ZONE=${TIME_ZONE:-Etc/UTC}
       - TRUSTED_PROXIES=REMOTE_ADDR
     depends_on:

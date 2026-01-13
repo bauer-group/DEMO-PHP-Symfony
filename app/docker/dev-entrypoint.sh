@@ -16,11 +16,9 @@ echo "==> Fixing permissions..."
 mkdir -p var/cache var/log vendor
 chown -R app:app var vendor
 
-# Install dependencies if vendor directory is empty (as app user)
-if [ ! -f "vendor/autoload.php" ]; then
-    echo "==> Installing Composer dependencies..."
-    su-exec app composer install --no-interaction --prefer-dist
-fi
+# Sync dependencies
+echo "==> Syncing Composer dependencies..."
+su-exec app composer install --no-interaction --prefer-dist
 
 # Clear old cache to ensure fresh config is used
 echo "==> Clearing cache..."

@@ -75,7 +75,7 @@ FROM composer:2 AS composer
 
 WORKDIR /app
 
-COPY composer.json composer.lock* symfony.lock* ./
+COPY composer.json composer.lock* ./
 
 RUN composer install \
     --no-dev \
@@ -87,8 +87,7 @@ RUN composer install \
 
 COPY . .
 
-RUN composer dump-autoload --optimize --classmap-authoritative \
-    && composer run-script post-install-cmd --no-interaction || true
+RUN composer dump-autoload --optimize --classmap-authoritative
 
 # =============================================================================
 # Production stage

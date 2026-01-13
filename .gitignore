@@ -2,6 +2,9 @@
 /vendor/
 /node_modules/
 
+# Symfony var (cache, logs)
+/var/
+
 # Environment
 .env
 .env.local
@@ -26,13 +29,10 @@ Thumbs.db
 # PHP
 *.log
 *.cache
-/var/
-!/var/.gitkeep
 
 # Symfony
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-###< symfony/framework-bundle ###
 
 # PHPUnit
 /phpunit.xml
