@@ -22,13 +22,17 @@ if [ ! -f "vendor/autoload.php" ]; then
     su-exec app composer install --no-interaction --prefer-dist
 fi
 
+# Clear old cache to ensure fresh config is used
+echo "==> Clearing cache..."
+rm -rf var/cache/*
+
 # Wait for database to be ready
 echo "==> Waiting for database connection..."
 max_attempts=30
 attempt=0
 
 while [ $attempt -lt $max_attempts ]; do
-    if su-exec app php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; then
+    if su-exec app php bin/console dbal:run-sql "SELECT 1" 2>&1; then
         echo "==> Database is ready!"
         break
     fi
