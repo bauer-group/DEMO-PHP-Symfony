@@ -55,10 +55,9 @@
                 }
             },
             "extensions": [
-                "bmewburn.vscode-intelephense-client",
-                "xdebug.php-debug",
                 "DEVSENSE.phptools-vscode",
-                "mblode.twig-language-2",
+                "xdebug.php-debug",
+                "moetelo.twiggy",
                 "mikestead.dotenv",
                 "EditorConfig.EditorConfig",
                 "ms-azuretools.vscode-docker",
