@@ -6,7 +6,7 @@ Designed as a reference implementation for containerized PHP development with VS
 
 ## Features
 
-- **Modern PHP Stack**: Symfony 7.2, Doctrine ORM, PHP 8.3
+- **Modern PHP Stack**: Symfony 7.2, Doctrine ORM, PHP 8.5
 - **Containerized**: Docker-based development and production environments
 - **VS Code Integration**: Dev Containers, Xdebug debugging, tasks
 - **Multiple Deployments**: Coolify, Traefik, Standalone

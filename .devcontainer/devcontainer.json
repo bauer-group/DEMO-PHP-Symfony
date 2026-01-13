@@ -25,7 +25,7 @@
                     "*.twig": "twig"
                 },
 
-                "intelephense.environment.phpVersion": "8.3.0",
+                "intelephense.environment.phpVersion": "8.5.0",
                 "intelephense.environment.documentRoot": "/app/public",
                 "intelephense.files.maxSize": 5000000,
                 "intelephense.stubs": [

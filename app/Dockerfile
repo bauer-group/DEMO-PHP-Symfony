@@ -4,7 +4,7 @@
 # Multi-stage build for optimized production image
 # Based on official PHP-FPM with Nginx
 
-FROM php:8.4-fpm-alpine AS base
+FROM php:8.5-fpm-alpine AS base
 
 # Labels for container metadata (OCI standard)
 LABEL org.opencontainers.image.title="PHP Todo App" \
@@ -35,8 +35,6 @@ RUN apk add --no-cache --virtual .build-deps \
     opcache \
     pdo_mysql \
     zip \
-    && pecl install apcu \
-    && docker-php-ext-enable apcu \
     && apk del .build-deps \
     && rm -rf /tmp/*
 
