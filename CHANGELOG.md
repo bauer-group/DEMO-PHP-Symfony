@@ -1,3 +1,11 @@
+# [0.3.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.2.0...v0.3.0) (2026-01-13)
+
+
+### Features
+
+* add quick add functionality for todos and improve UI feedback ([eff88dd](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/eff88dd42a5c4c8abe25f7ce527f454df1c1db2e))
+* enhance todo edit and new templates with improved card styling and button functionality ([65d7edc](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/65d7edc548cff1f00cf0db8137853bf7009ebca5))
+
 # [0.2.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.9...v0.2.0) (2026-01-13)
 
 
