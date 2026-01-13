@@ -23,7 +23,9 @@ su-exec app composer dump-autoload
 
 # Run Symfony auto-scripts manually (except importmap:install)
 echo "==> Installing assets..."
-su-exec app php bin/console assets:install public
+if ! timeout 60 su-exec app php bin/console assets:install public; then
+    echo "==> Warning: assets:install timed out or failed, continuing anyway..."
+fi
 
 # Install importmap vendor assets (Turbo, Stimulus) with timeout
 echo "==> Installing importmap assets..."
