@@ -1,3 +1,10 @@
+## [0.3.2](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.1...v0.3.2) (2026-01-13)
+
+
+### Bug Fixes
+
+* update entrypoint script to sync Composer dependencies without auto-scripts and run asset installation separately ([52b9d4c](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/52b9d4cf46c41f2bd18ec21142bc0f433d8b5c9f))
+
 ## [0.3.1](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.0...v0.3.1) (2026-01-13)
 
 
