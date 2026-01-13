@@ -1,3 +1,10 @@
+## [0.3.5](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.4...v0.3.5) (2026-01-13)
+
+
+### Bug Fixes
+
+* unify database volume naming across Docker Compose files ([2484db1](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/2484db13e454b51f945c1acf5f0b7130687bbe14))
+
 ## [0.3.4](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.3...v0.3.4) (2026-01-13)
 
 
