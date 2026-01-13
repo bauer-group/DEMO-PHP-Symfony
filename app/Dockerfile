@@ -6,12 +6,24 @@
 
 FROM php:8.5-fpm-alpine AS base
 
-# Labels for container metadata (OCI standard)
-LABEL org.opencontainers.image.title="PHP Todo App" \
-      org.opencontainers.image.description="Containerized PHP Todo Application with Symfony and Doctrine" \
-      org.opencontainers.image.vendor="Bauer Group" \
-      org.opencontainers.image.source="https://github.com/bauer-group/php-todo-app" \
-      org.opencontainers.image.licenses="MIT"
+# =============================================================================
+# Metadata Labels
+# =============================================================================
+
+# Metadata
+LABEL vendor="BAUER GROUP"
+LABEL maintainer="Karl Bauer <karl.bauer@bauer-group.com>"
+
+# Opencontainers Metadata
+LABEL org.opencontainers.image.title="PHP Todo App [BAUER GROUP]"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.vendor="BAUER GROUP"
+LABEL org.opencontainers.image.authors="Karl Bauer <karl.bauer@bauer-group.com>"
+LABEL org.opencontainers.image.source="https://github.com/bauer-group/DEMO-PHP-Dockerized"
+LABEL org.opencontainers.image.url="https://github.com/bauer-group/DEMO-PHP-Dockerized"
+LABEL org.opencontainers.image.documentation="https://github.com/bauer-group/DEMO-PHP-Dockerized#readme"
+LABEL org.opencontainers.image.description="Containerized PHP Todo Application with Symfony and Doctrine"
+LABEL org.opencontainers.image.version="0.0.0"
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -22,6 +34,7 @@ RUN apk add --no-cache \
     icu-libs \
     libzip \
     mysql-client \
+    su-exec \
     && rm -rf /var/cache/apk/*
 
 # Install PHP extensions using install-php-extensions (better PHP 8.5 support)
@@ -140,8 +153,7 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY docker/dev-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/dev-entrypoint.sh
 
-# Set user
-USER app
+# NOTE: Runs as root like production - entrypoint handles user switching via su-exec
 
 # Expose ports (HTTP + Xdebug)
 EXPOSE 80 9003

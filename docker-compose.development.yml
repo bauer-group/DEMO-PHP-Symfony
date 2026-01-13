@@ -42,10 +42,9 @@ services:
     volumes:
       # Mount source code for hot-reload
       - ./app:/app:cached
-      # Preserve vendor directory in container
-      - vendor_data:/app/vendor
-      # Preserve var directory for cache/logs
-      - var_data:/app/var
+      # Named volumes for writable directories (proper permissions)
+      - dev_vendor:/app/vendor
+      - dev_var:/app/var
     depends_on:
       database:
         condition: service_healthy
@@ -119,7 +118,7 @@ networks:
 volumes:
   database_data:
     name: ${STACK_NAME:-todo-app}_database_data
-  vendor_data:
-    name: ${STACK_NAME:-todo-app}_vendor
-  var_data:
-    name: ${STACK_NAME:-todo-app}_var
+  dev_vendor:
+    name: ${STACK_NAME:-todo-app}_dev_vendor
+  dev_var:
+    name: ${STACK_NAME:-todo-app}_dev_var

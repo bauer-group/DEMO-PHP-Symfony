@@ -2,6 +2,8 @@
 # =============================================================================
 # Development Entrypoint Script
 # =============================================================================
+# Runs as root initially (like production), handles permissions,
+# then switches to app user for the PHP server.
 
 set -e
 
@@ -9,10 +11,15 @@ echo "==> Starting PHP Todo Application (Development Mode)..."
 
 cd /app
 
-# Install dependencies if vendor directory is empty
-if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+# Fix permissions for mounted volumes
+echo "==> Fixing permissions..."
+mkdir -p var/cache var/log vendor
+chown -R app:app var vendor
+
+# Install dependencies if vendor directory is empty (as app user)
+if [ ! -f "vendor/autoload.php" ]; then
     echo "==> Installing Composer dependencies..."
-    composer install --no-interaction --prefer-dist
+    su-exec app composer install --no-interaction --prefer-dist
 fi
 
 # Wait for database to be ready
@@ -21,7 +28,7 @@ max_attempts=30
 attempt=0
 
 while [ $attempt -lt $max_attempts ]; do
-    if php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; then
+    if su-exec app php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; then
         echo "==> Database is ready!"
         break
     fi
@@ -37,15 +44,12 @@ fi
 
 # Run database migrations
 echo "==> Running database migrations..."
-php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+su-exec app php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
 # Clear cache
 echo "==> Clearing cache..."
-php bin/console cache:clear
+su-exec app php bin/console cache:clear
 
-# Create var directories
-mkdir -p var/cache var/log
-
-# Start PHP built-in server (for development)
+# Start PHP built-in server as app user (for development)
 echo "==> Starting PHP development server on port 80..."
-exec php -S 0.0.0.0:80 -t public
+exec su-exec app php -S 0.0.0.0:80 -t public
