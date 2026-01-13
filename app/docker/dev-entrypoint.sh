@@ -22,7 +22,9 @@ su-exec app composer install --no-interaction --prefer-dist
 
 # Install importmap vendor assets (Turbo, Stimulus)
 echo "==> Installing importmap assets..."
-su-exec app php bin/console importmap:install
+if ! timeout 60 su-exec app php bin/console importmap:install 2>/dev/null; then
+    echo "==> Warning: importmap:install timed out or failed, continuing anyway..."
+fi
 
 # Clear old cache to ensure fresh config is used
 echo "==> Clearing cache..."

@@ -154,8 +154,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/dev-entrypoint.sh
 
 # NOTE: Runs as root like production - entrypoint handles user switching via su-exec
 
-# Expose ports (HTTP + Xdebug)
-EXPOSE 80 9003
+# Expose ports (HTTP)
+EXPOSE 80
 
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/usr/local/bin/dev-entrypoint.sh"]
