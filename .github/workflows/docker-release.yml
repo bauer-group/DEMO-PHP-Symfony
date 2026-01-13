@@ -122,6 +122,8 @@ jobs:
       security-scan: false
       security-fail-on: 'CRITICAL'
       generate-sbom: true
+      # NOTE: Cache disabled - self-hosted runners have connectivity issues
+      # with GitHub's cache infrastructure (HTTP 502 errors)
       cache-enabled: false
     secrets: inherit
 
@@ -144,5 +146,7 @@ jobs:
       push: false
       security-scan: false
       security-fail-on: 'CRITICAL'
+      # NOTE: Cache disabled - self-hosted runners have connectivity issues
+      # with GitHub's cache infrastructure (HTTP 502 errors)
       cache-enabled: false
     secrets: inherit
