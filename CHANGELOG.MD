@@ -1,3 +1,9 @@
+## [0.1.1](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.0...v0.1.1) (2026-01-13)
+
+### 🐛 Bug Fixes
+
+* update PHP version to 8.5 in configuration files ([84a7abe](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/84a7abe1c58bebddcb89da924b7f9acf0ab27c6c))
+
 ## [0.1.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.0.0...v0.1.0) (2026-01-13)
 
 ### 🚀 Features
