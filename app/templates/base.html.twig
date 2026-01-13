@@ -50,13 +50,15 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease;
         }
 
         .card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(255, 133, 0, 0.1);
+            border-color: rgba(255, 133, 0, 0.3);
+        }
+
+        .card.no-hover:hover {
+            border-color: var(--border);
         }
 
         .todo-item {
@@ -217,6 +219,104 @@
                 gap: 0.5rem;
             }
         }
+
+        /* Turbo Loading States */
+        turbo-frame {
+            display: block;
+        }
+
+        turbo-frame[busy] {
+            opacity: 0.6;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .turbo-progress-bar {
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+
+        /* Smooth Animations - only on page load, not Turbo updates */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Alert animation */
+        .alert {
+            animation: slideIn 0.3s ease;
+        }
+
+        /* Button Loading State */
+        button[type="submit"]:disabled,
+        button.loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        button[type="submit"]:disabled::after,
+        button.loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .btn, .form-control, .form-select, .card, .list-group-item {
+            transition: all 0.2s ease;
+        }
+
+        /* Checkbox animation */
+        .btn-link i {
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-link:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Remove focus outlines, use subtle shadows instead */
+        *:focus {
+            outline: none !important;
+        }
+
+        .btn:focus, .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(255, 133, 0, 0.2);
+        }
+
+        /* Alert styling */
+        .alert {
+            border-radius: 12px;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
     </style>
     {% block stylesheets %}{% endblock %}
 </head>
@@ -232,13 +332,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('todo_index') }}">
-                            <i class="bi bi-list-task me-1"></i>All Todos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-gradient-primary btn-sm ms-2 px-3" href="{{ path('todo_new') }}">
-                            <i class="bi bi-plus-lg me-1"></i>New Todo
+                        <a class="nav-link active" href="{{ path('todo_index') }}">
+                            <i class="bi bi-list-task me-1"></i>My Todos
                         </a>
                     </li>
                 </ul>
@@ -262,8 +357,10 @@
     <footer class="py-4 mt-auto">
         <div class="container text-center text-muted">
             <small>
-                <i class="bi bi-heart-fill text-danger"></i>
-                Built with Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }} &amp; Doctrine
+                Made with <i class="bi bi-heart-fill text-danger"></i> by
+                <a href="https://github.com/bauer-group/DEMO-PHP-Dockerized" target="_blank" rel="noopener">
+                    <i class="bi bi-github me-1"></i>BAUER GROUP
+                </a>
             </small>
         </div>
     </footer>

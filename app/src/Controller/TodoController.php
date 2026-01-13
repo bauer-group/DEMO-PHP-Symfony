@@ -76,14 +76,40 @@ class TodoController extends AbstractController
         ]);
     }
 
+    #[Route('/quick-add', name: 'todo_quick_add', methods: ['POST'])]
+    public function quickAdd(Request $request): Response
+    {
+        $data = $request->request->all('todo');
+
+        if (!$this->isCsrfTokenValid('todo', $data['_token'] ?? '')) {
+            $this->addFlash('danger', 'Invalid token');
+            return $this->redirectToRoute('todo_index');
+        }
+
+        if (empty($data['title'])) {
+            $this->addFlash('danger', 'Title is required');
+            return $this->redirectToRoute('todo_index');
+        }
+
+        $todo = new Todo();
+        $todo->setTitle($data['title']);
+        $todo->setPriority((int) ($data['priority'] ?? 2));
+
+        if (!empty($data['dueDate'])) {
+            $todo->setDueDate(new \DateTime($data['dueDate']));
+        }
+
+        $this->todoRepository->save($todo, true);
+
+        return $this->redirectToRoute('todo_index');
+    }
+
     #[Route('/{id}/toggle', name: 'todo_toggle', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function toggle(Request $request, Todo $todo): Response
     {
         if ($this->isCsrfTokenValid('toggle'.$todo->getId(), $request->request->get('_token'))) {
             $todo->toggle();
             $this->entityManager->flush();
-
-            $this->addFlash('success', $todo->isCompleted() ? 'Todo completed!' : 'Todo reopened!');
         }
 
         return $this->redirectToRoute('todo_index');
