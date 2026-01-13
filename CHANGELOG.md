@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.9...v0.2.0) (2026-01-13)
+
+
+### Features
+
+* integrate Symfony UX with Stimulus and Turbo bundles ([e23decc](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/e23deccc7f71ff75865fd86fa7bfbbb17b3435e4))
+
 ## [0.1.9](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.8...v0.1.9) (2026-01-13)
 
 
