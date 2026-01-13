@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.5...v0.4.0) (2026-01-13)
+
+
+### Features
+
+* add .env file creation from template in entrypoint scripts ([e0a9116](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/e0a9116dca818a1043511f7499f795f5a6b7ba95))
+
 ## [0.3.5](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.4...v0.3.5) (2026-01-13)
 
 
