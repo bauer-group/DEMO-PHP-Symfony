@@ -1,3 +1,10 @@
+## [0.3.3](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.2...v0.3.3) (2026-01-13)
+
+
+### Bug Fixes
+
+* add timeout handling for assets installation in entrypoint script ([42be772](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/42be7724bc81a172114f8cebfd26182fd1a4b4c8))
+
 ## [0.3.2](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.1...v0.3.2) (2026-01-13)
 
 
