@@ -1,3 +1,9 @@
+## [0.1.2](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.1...v0.1.2) (2026-01-13)
+
+### 🐛 Bug Fixes
+
+* optimize PHP extension installation in Dockerfile ([9674742](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/967474246a7ed845637e5b7c01d8cdaef72745e0))
+
 ## [0.1.1](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.0...v0.1.1) (2026-01-13)
 
 ### 🐛 Bug Fixes
