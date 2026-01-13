@@ -117,8 +117,8 @@ RUN apk add --no-cache \
     vim \
     && rm -rf /var/cache/apk/*
 
-# Install Xdebug for debugging
-RUN install-php-extensions xdebug
+# Install Xdebug for debugging (3.5.0+ required for PHP 8.5)
+RUN install-php-extensions xdebug-3.5.0
 
 # Configure PHP for development
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
