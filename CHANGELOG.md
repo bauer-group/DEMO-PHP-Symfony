@@ -1,3 +1,10 @@
+## [0.1.6](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.5...v0.1.6) (2026-01-13)
+
+
+### Bug Fixes
+
+* update Xdebug installation and configuration for PHP 8.5 support ([91d79af](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/91d79afc6a341b98b83bf0ead3183204bb77a076))
+
 ## [0.1.5](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.4...v0.1.5) (2026-01-13)
 
 
