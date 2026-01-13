@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.3...v0.1.4) (2026-01-13)
+
+
+### Bug Fixes
+
+* update Xdebug installation method for PHP 8.5 using PIE ([c5ecce7](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/c5ecce76cc195f8f18a6f9ca68eed62c665b0bc1))
+
 ## [0.1.3](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.2...v0.1.3) (2026-01-13)
 
 ### 🐛 Bug Fixes
