@@ -24,19 +24,14 @@ RUN apk add --no-cache \
     mysql-client \
     && rm -rf /var/cache/apk/*
 
-# Install PHP extensions
-RUN apk add --no-cache --virtual .build-deps \
-    $PHPIZE_DEPS \
-    icu-dev \
-    libzip-dev \
-    linux-headers \
-    && docker-php-ext-install \
+# Install PHP extensions using install-php-extensions (better PHP 8.5 support)
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN install-php-extensions \
     intl \
     opcache \
     pdo_mysql \
     zip \
-    && apk del .build-deps \
-    && rm -rf /tmp/*
+    @composer
 
 # Configure PHP for production
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -123,20 +118,13 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Install Xdebug for debugging
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS linux-headers \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && apk del .build-deps \
-    && rm -rf /tmp/*
+RUN install-php-extensions xdebug
 
 # Configure PHP for development
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 COPY docker/php.ini "$PHP_INI_DIR/conf.d/99-custom.ini"
 COPY docker/xdebug.ini "$PHP_INI_DIR/conf.d/xdebug.ini"
-
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Copy entrypoint
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
