@@ -1,3 +1,10 @@
+## [0.1.7](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.6...v0.1.7) (2026-01-13)
+
+
+### Bug Fixes
+
+* XDebug Dependencies ([160f929](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/160f929bd69afc4fb06cf14ca56d6c53e6f1041f))
+
 ## [0.1.6](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.5...v0.1.6) (2026-01-13)
 
 
