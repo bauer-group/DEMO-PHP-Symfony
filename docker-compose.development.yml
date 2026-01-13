@@ -35,7 +35,7 @@ services:
       - APP_ENV=dev
       - APP_SECRET=dev-secret-not-for-production
       - APP_DEBUG=1
-      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4
+      - DATABASE_URL=mysql://${MYSQL_USER:-todo_user}:${MYSQL_PASSWORD:-todo_password}@database:3306/${MYSQL_DATABASE:-todo_db}?serverVersion=8.0&charset=utf8mb4&sslmode=disabled
       - TIME_ZONE=${TIME_ZONE:-Etc/UTC}
       - VAR_DUMPER_SERVER=host.docker.internal:9912
       - XDEBUG_MODE=debug,develop
