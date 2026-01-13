@@ -1,3 +1,12 @@
+## [0.1.8](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.7...v0.1.8) (2026-01-13)
+
+
+### Bug Fixes
+
+* disable caching due to connectivity issues with GitHub's cache infrastructure ([3a6bf7d](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/3a6bf7d5369ffc6fdf9ec38d3c8ad309e9b72f25))
+* disable caching for Docker build and PR validation ([58d8fa7](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/58d8fa734da40b6a7e2fbe4bf5fdb4a58b4a0e64))
+* update Symfony dependencies to version 8.0.* ([d66773e](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/d66773ec4c9e3a15eb221dd7c5ad5a3441877694))
+
 ## [0.1.7](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.6...v0.1.7) (2026-01-13)
 
 
