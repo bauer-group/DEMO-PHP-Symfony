@@ -1,3 +1,9 @@
+## [0.1.3](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.2...v0.1.3) (2026-01-13)
+
+### 🐛 Bug Fixes
+
+* xdebug-3.5.0 ([af80682](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/af806824873444da3038640646ee4c6fd489682b))
+
 ## [0.1.2](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.1.1...v0.1.2) (2026-01-13)
 
 ### 🐛 Bug Fixes
