@@ -118,14 +118,13 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Install Xdebug 3.5.0 from source (PHP 8.5 support)
-RUN apk add --no-cache --virtual .xdebug-deps $PHPIZE_DEPS linux-headers git \
+RUN apk add --no-cache --virtual .xdebug-deps $PHPIZE_DEPS linux-headers \
     && git clone --depth 1 --branch 3.5.0 https://github.com/xdebug/xdebug.git /tmp/xdebug \
     && cd /tmp/xdebug \
     && phpize \
     && ./configure --enable-xdebug \
     && make \
     && make install \
-    && docker-php-ext-enable xdebug \
     && cd / \
     && apk del .xdebug-deps \
     && rm -rf /tmp/*
