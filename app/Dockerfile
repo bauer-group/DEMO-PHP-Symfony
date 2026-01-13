@@ -117,8 +117,13 @@ RUN apk add --no-cache \
     vim \
     && rm -rf /var/cache/apk/*
 
-# Install Xdebug for debugging (3.5.0+ required for PHP 8.5)
-RUN install-php-extensions xdebug-3.5.0
+# Install Xdebug for debugging using PIE (recommended for PHP 8.5)
+RUN apk add --no-cache --virtual .xdebug-deps $PHPIZE_DEPS linux-headers \
+    && curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /usr/local/bin/pie \
+    && chmod +x /usr/local/bin/pie \
+    && pie install xdebug/xdebug \
+    && apk del .xdebug-deps \
+    && rm -rf /tmp/*
 
 # Configure PHP for development
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
