@@ -4,7 +4,7 @@
 # Multi-stage build for optimized production image
 # Based on official PHP-FPM with Nginx
 
-FROM php:8.5-fpm-alpine AS base
+FROM php:8.5.2-fpm-alpine AS base
 
 # =============================================================================
 # Metadata Labels
