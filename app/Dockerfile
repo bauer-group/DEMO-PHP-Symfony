@@ -89,6 +89,13 @@ COPY . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative
 
+# Compile the environment into .env.local.php. --empty keeps nothing but
+# APP_ENV=prod and ignores every .env file, so no value (and no secret) from
+# the build context lands in the image: at runtime Symfony reads APP_SECRET,
+# DATABASE_URL, ... from real environment variables only. It also lets
+# bin/console boot without app/.env, which .dockerignore excludes.
+RUN composer dump-env prod --empty
+
 # =============================================================================
 # Production stage
 # =============================================================================
@@ -101,8 +108,16 @@ COPY --from=composer --chown=app:app /app /app
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Pre-warm cache (optional, reduces first-request latency)
-RUN APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup --no-interaction || true
+# Pre-warm the prod cache (APP_ENV=prod, debug off, from .env.local.php).
+# A failure fails the build: it means the prod container or a template does
+# not compile. display_errors=stderr because php.ini logs to
+# /app/var/log/php_errors.log, which hid every error of this step before.
+# DATABASE_URL is a placeholder for this RUN only (not persisted, no
+# credentials, never connected to): Doctrine's metadata warmer needs the
+# platform, and serverVersion lets DBAL derive it without a connection.
+RUN DATABASE_URL='mysql://127.0.0.1:3306/build?serverVersion=8.0&charset=utf8mb4' \
+    php -d display_errors=stderr bin/console cache:warmup --no-interaction \
+    && chown -R app:app var
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
