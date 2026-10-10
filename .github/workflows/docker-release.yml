@@ -132,9 +132,13 @@ jobs:
         run: cp .env.dev .env
 
       - name: Install dependencies
-        # Includes the auto-scripts (importmap:install fills assets/vendor/,
-        # which every page rendering base.html.twig needs).
         run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install importmap packages
+        # composer.json has no post-install-cmd, so the importmap:install
+        # auto-script never runs on install. Every page rendering
+        # base.html.twig needs assets/vendor/ (gitignored).
+        run: php bin/console importmap:install --no-interaction
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --no-coverage
