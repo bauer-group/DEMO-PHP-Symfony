@@ -5,6 +5,20 @@
 
 * add .env file creation from template in entrypoint scripts ([e0a9116](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/e0a9116dca818a1043511f7499f795f5a6b7ba95))
 
+## [0.4.1](https://github.com/bauer-group/DEMO-PHP-Symfony/compare/v0.4.0...v0.4.1) (2026-10-10)
+
+### 🐛 Bug Fixes
+
+* **ci:** added the missing permissions block ([facfc17](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/facfc17917ba528917ee781fa9144cce6d8132b2))
+* **composer:** updated twig, symfony and phpunit to patched versions ([#27](https://github.com/bauer-group/DEMO-PHP-Symfony/issues/27)) ([5510379](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/5510379b15738928c5189cd410e9769d2ad3df55))
+
+### 🔧 Maintenance
+
+* **ci:** removed issue AI summary workflow ([432ed87](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/432ed8712c616c0da3beee5703c569a4e4bafd0b)), references [bauer-group/automation-templates#105](https://github.com/bauer-group/automation-templates/issues/105)
+* **ci:** removed redundant teams notification ([e3a7f57](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/e3a7f5770b08e1dd74d8ce1721e863ed16476d94))
+* **composer:** bump phpunit/phpunit ([36ccfee](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/36ccfee67a8d207e2df57e8eaf49cea5af6e0126))
+* update Dockerfile version to 0.4.0 ([647fbbe](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/647fbbe6b87845fcf53f99e61549340b39837679))
+
 ## [0.3.5](https://github.com/bauer-group/DEMO-PHP-Dockerized/compare/v0.3.4...v0.3.5) (2026-01-13)
 
 
