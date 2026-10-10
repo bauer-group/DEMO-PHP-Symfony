@@ -118,6 +118,10 @@ jobs:
       latest-tag: true
       dockerfile-path: './app/Dockerfile'
       docker-context: './app'
+      # The Dockerfile ends with the 'development' stage (Xdebug, no vendor/),
+      # so without an explicit target BuildKit builds that one. 'production'
+      # runs composer install from composer.lock and is the shipped image.
+      build-target: 'production'
       platforms: 'linux/amd64'
       push: true
       security-scan: false
@@ -142,6 +146,10 @@ jobs:
       auto-tags: true
       dockerfile-path: './app/Dockerfile'
       docker-context: './app'
+      # The Dockerfile ends with the 'development' stage (Xdebug, no vendor/),
+      # so without an explicit target BuildKit builds that one. 'production'
+      # runs composer install from composer.lock and is the shipped image.
+      build-target: 'production'
       platforms: 'linux/amd64'
       push: false
       security-scan: false
