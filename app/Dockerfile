@@ -108,6 +108,14 @@ COPY --from=composer --chown=app:app /app /app
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Download the importmap packages (assets/vendor/ is gitignored) and compile
+# every asset to public/assets/ - the asset steps "composer install
+# --no-scripts" skips. Without them each page rendering base.html.twig fails
+# with 'The "@hotwired/stimulus" vendor asset is missing', and in prod
+# nothing serves /assets/ (the AssetMapper dev server is debug-only).
+RUN php -d display_errors=stderr bin/console importmap:install --no-interaction \
+    && php -d display_errors=stderr bin/console asset-map:compile --no-interaction
+
 # Pre-warm the prod cache (APP_ENV=prod, debug off, from .env.local.php).
 # A failure fails the build: it means the prod container or a template does
 # not compile. display_errors=stderr because php.ini logs to
