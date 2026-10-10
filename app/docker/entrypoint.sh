@@ -21,7 +21,7 @@ max_attempts=30
 attempt=0
 
 while [ $attempt -lt $max_attempts ]; do
-    if php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; then
+    if php bin/console dbal:run-sql "SELECT 1" > /dev/null 2>&1; then
         echo "==> Database is ready!"
         break
     fi
