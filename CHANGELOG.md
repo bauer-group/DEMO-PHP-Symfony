@@ -5,6 +5,19 @@
 
 * add .env file creation from template in entrypoint scripts ([e0a9116](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/e0a9116dca818a1043511f7499f795f5a6b7ba95))
 
+## [0.4.2](https://github.com/bauer-group/DEMO-PHP-Symfony/compare/v0.4.1...v0.4.2) (2026-10-10)
+
+### 🐛 Bug Fixes
+
+* **docker:** built the AssetMapper assets into the production image ([23ce544](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/23ce544dbf9daff1115a9cfa4575caefa5aefcde))
+* **docker:** made the production cache warmup run and fail the build ([7c0b210](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/7c0b210a81961621ff81f52290ced9061edc20db))
+* **docker:** replaced the removed doctrine:query:sql in the entrypoint ([628ee27](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/628ee27bf8ce7ab6722d873fb610648e778c7061))
+* **doctrine:** removed the proxy_dir option dropped in DoctrineBundle 3 ([93267d6](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/93267d69684ee8f6f18ee3ec58047f8fec773373))
+
+### 🔧 Maintenance
+
+* update Dockerfile version to 0.4.1 ([21f65d5](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/21f65d50db29de7e096d386cae9c0fddc813cbd9))
+
 ## [0.4.1](https://github.com/bauer-group/DEMO-PHP-Symfony/compare/v0.4.0...v0.4.1) (2026-10-10)
 
 ### 🐛 Bug Fixes
