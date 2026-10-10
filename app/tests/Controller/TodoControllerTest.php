@@ -14,7 +14,7 @@ class TodoControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        // Create schema for SQLite in-memory database
+        // Recreate the schema in the SQLite test database (see .env.test)
         $kernel = self::bootKernel();
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $metadata = $em->getMetadataFactory()->getAllMetadata();
@@ -24,6 +24,9 @@ class TodoControllerTest extends WebTestCase
             $schemaTool->dropSchema($metadata);
             $schemaTool->createSchema($metadata);
         }
+
+        // createClient() refuses an already booted kernel, so release it
+        self::ensureKernelShutdown();
     }
 
     public function testIndexPageLoads(): void
