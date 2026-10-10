@@ -19,10 +19,6 @@ doctrine:
                 alias: App
 
 when@prod:
-    doctrine:
-        orm:
-            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
-
     framework:
         cache:
             pools:
