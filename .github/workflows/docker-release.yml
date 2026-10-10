@@ -87,11 +87,64 @@ jobs:
     secrets: inherit
 
   # ---------------------------------------------------------------------------
+  # PHPUnit Test Suite (app/tests)
+  # ---------------------------------------------------------------------------
+  # Inline instead of automation-templates' php-build.yml: Symfony's Dotenv
+  # needs app/.env before composer's auto-scripts run, and php-build.yml has
+  # no step for that (it also bundles PHPCS/PHPStan gates this repo has no
+  # configuration for). Runs on pushes too, so a red suite blocks a release.
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Read PHP version from composer.json
+        id: php
+        run: |
+          constraint=$(jq -r '.require.php' composer.json)
+          version=$(printf '%s' "$constraint" | grep -oE '[0-9]+\.[0-9]+' | head -n 1)
+          if [ -z "$version" ]; then
+            echo "::error::Cannot derive a PHP version from require.php '$constraint'"
+            exit 1
+          fi
+          echo "require.php '$constraint' -> PHP $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ steps.php.outputs.version }}
+          extensions: intl, pdo_sqlite
+          coverage: none
+          tools: composer:v2
+
+      - name: Create app/.env
+        # Symfony's Dotenv refuses to boot without app/.env (gitignored);
+        # the dev container creates it from the same template.
+        run: cp .env.dev .env
+
+      - name: Install dependencies
+        # Includes the auto-scripts (importmap:install fills assets/vendor/,
+        # which every page rendering base.html.twig needs).
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --no-coverage
+
+  # ---------------------------------------------------------------------------
   # Semantic Release
   # ---------------------------------------------------------------------------
   release:
     name: Create Release
-    needs: [validate-compose, validate-scripts]
+    needs: [validate-compose, validate-scripts, phpunit]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: bauer-group/automation-templates/.github/workflows/modules-semantic-release.yml@main
     with:
