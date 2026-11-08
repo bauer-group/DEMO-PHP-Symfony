@@ -44,7 +44,7 @@ Configure secrets in your repository or organization settings:
 | Workflow                   | Trigger            | Purpose                           |
 |----------------------------|--------------------|-----------------------------------|
 | `docker-release.yml`       | Push to main, PR   | Build & publish Docker image      |
-| `docker-maintenance.yml`   | Dependabot PR      | Auto-merge Docker updates         |
+| `docker-maintenance.yml`   | Dependabot PR      | Auto-merge tested Dependabot PRs  |
 | `teams-notifications.yml`  | Various events     | Send Teams notifications          |
 | `ai-issue-summary.yml`     | New issues/PRs     | AI-powered issue analysis         |
 
