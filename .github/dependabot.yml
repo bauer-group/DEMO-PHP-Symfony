@@ -12,8 +12,8 @@ updates:
     directory: "/app"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      day: "sunday"
+      time: "16:50"
       timezone: "Etc/UTC"
     commit-message:
       prefix: "chore(docker)"
@@ -28,8 +28,8 @@ updates:
     directory: "/app"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      day: "sunday"
+      time: "16:50"
       timezone: "Etc/UTC"
     commit-message:
       prefix: "chore(composer)"
@@ -55,8 +55,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      day: "sunday"
+      time: "16:50"
       timezone: "Etc/UTC"
     commit-message:
       prefix: "chore(actions)"
