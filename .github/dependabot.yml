@@ -2,6 +2,15 @@
 # Dependabot Configuration
 # =============================================================================
 # Automated dependency updates for Docker images and Composer packages.
+#
+# Commit prefixes decide whether a merged update is released
+# (docker-maintenance.yml dispatches docker-release.yml after the merge):
+#   docker         -> fix(docker): PATCH release, the image is rebuilt
+#   composer       -> fix(deps): PATCH release - the production image
+#                     installs the runtime packages from composer.lock;
+#                     dev-only packages (prefix-development: PHPUnit,
+#                     debug and maker bundles) -> chore(deps-dev)
+#   github-actions -> chore(actions): no release, never auto-merged
 # =============================================================================
 
 version: 2
@@ -16,7 +25,7 @@ updates:
       time: "16:50"
       timezone: "Etc/UTC"
     commit-message:
-      prefix: "chore(docker)"
+      prefix: "fix(docker)"
     labels:
       - "dependencies"
       - "docker"
@@ -30,7 +39,8 @@ updates:
       time: "16:50"
       timezone: "Etc/UTC"
     commit-message:
-      prefix: "chore(composer)"
+      prefix: "fix(deps)"
+      prefix-development: "chore(deps-dev)"
     labels:
       - "dependencies"
       - "php"
