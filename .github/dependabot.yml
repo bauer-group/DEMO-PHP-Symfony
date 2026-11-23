@@ -51,6 +51,11 @@ updates:
       doctrine:
         patterns:
           - "doctrine/*"
+      # twig/twig and twig/extra-bundle share one release line; update
+      # them in one PR instead of separate, drifting ones
+      twig:
+        patterns:
+          - "twig/*"
       dev-dependencies:
         dependency-type: "development"
     ignore:
