@@ -5,6 +5,16 @@
 
 * add .env file creation from template in entrypoint scripts ([e0a9116](https://github.com/bauer-group/DEMO-PHP-Dockerized/commit/e0a9116dca818a1043511f7499f795f5a6b7ba95))
 
+## [0.4.5](https://github.com/bauer-group/DEMO-PHP-Symfony/compare/v0.4.4...v0.4.5) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **deps:** bump symfony/yaml from 8.0.15 to 8.1.11 in /app ([3fd94ff](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/3fd94ff7dd6b7813ca163ee92c48edfa259ae9a7))
+
+### 🔧 Maintenance
+
+* update Dockerfile version to 0.4.4 ([edf5455](https://github.com/bauer-group/DEMO-PHP-Symfony/commit/edf5455dc01ce949cc4fa96fe0119b975746a50d))
+
 ## [0.4.4](https://github.com/bauer-group/DEMO-PHP-Symfony/compare/v0.4.3...v0.4.4) (2026-11-22)
 
 ### 🐛 Bug Fixes
